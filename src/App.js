@@ -1,3 +1,3 @@
 export default function App() {
-  return <div>Protel Code Challenge</div>;
+  return <div>Protel Code Challenge</div>
 }
