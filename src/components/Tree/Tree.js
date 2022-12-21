@@ -1,44 +1,51 @@
 import { ReactComponent as TreeSVG } from '../../assets/cartoon-tree.svg'
 import Apple from '../Apple'
 import styles from './Tree.module.scss'
-import { useMemo } from 'react'
-import { getRandomInt } from '../../utils'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
-function Apples({ count = 0 }) {
-  const appleArr = Array.from({ length: count })
+export default function Tree({ appleCount = 0, applePositions = [] }) {
+  const [isShaking, setIShaking] = useState(false)
+  const [isDropping, setIsDropping] = useState(false)
 
-  const applePositions = useMemo(() => {
-    return appleArr.map(() => ({
-      marginTop: `${getRandomInt(5, 13)}rem`,
-      marginLeft: `${getRandomInt(5, 25)}rem`,
-    }))
-  }, [appleArr])
+  const handleTreeClick = () => {
+    setIShaking(true)
 
-  return appleArr.map((_, i) => (
-    <Apple
-      key={i}
-      className={styles.appleSvg}
-      style={{
-        ...applePositions[i],
-      }}
-    />
-  ))
-}
+    setTimeout(() => {
+      setIShaking(false)
+      setIsDropping(true)
+    }, [3000])
+  }
 
-export default function Tree({ applesCount = 0 }) {
   return (
     <div className={styles.treeWrapper}>
       <TreeSVG
+        onClick={handleTreeClick}
         width={600}
         height={600}
-        className={styles.treeSvg}
+        className={classNames(styles.treeSvg, {
+          [styles.isShaking]: isShaking,
+        })}
       />
-      <Apples count={applesCount} />
+
+      {Array.from({ length: appleCount }).map((_, i) => (
+        <Apple
+          key={i}
+          className={classNames(styles.appleSvg, {
+            [styles.isShaking]: isShaking,
+            [styles.isDropping]: isDropping,
+          })}
+          style={{
+            ...applePositions[i],
+          }}
+        />
+      ))}
     </div>
   )
 }
 
 Tree.propTypes = {
-  applesCount: PropTypes.number,
+  appleCount: PropTypes.number,
+  applePositions: PropTypes.array,
 }
