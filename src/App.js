@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Tree from './components/Tree'
 import {
+  reset,
   setIsApplesDropping,
   setIsBasketHasApples,
   setIsTreeShaking,
@@ -9,9 +10,14 @@ import { useEffect, useRef } from 'react'
 import Basket from './components/Basket/Basket'
 import styles from './styles/App.module.scss'
 import RestartButton from './components/RestartButton'
+import classNames from 'classnames'
 
 export default function App() {
-  const { isBasketHasApples } = useSelector((state) => state.tree)
+  const { isBasketHasApples, isTreeShaking, isApplesDropping } = useSelector(
+    (state) => state.tree
+  )
+
+  const isProgress = isBasketHasApples || isApplesDropping || isTreeShaking
 
   const dispatch = useDispatch()
 
@@ -22,6 +28,8 @@ export default function App() {
   }, [])
 
   const handleTreeClick = () => {
+    if (isProgress) return
+
     dispatch(setIsTreeShaking(true))
 
     timerRef.current = setTimeout(() => {
@@ -37,15 +45,26 @@ export default function App() {
     }, [1000])
   }
 
+  const handleRestart = () => {
+    dispatch(reset())
+  }
+
   return (
     <div className={styles.app}>
       <Tree
         isShowApples={!isBasketHasApples}
         onTreeClick={handleTreeClick}
         onApplesDropped={handleApplesDropped}
+        className={classNames({
+          [styles.disableTree]: isProgress,
+        })}
       />
       <div className={styles.side}>
-        <div>Restart Button</div>
+        <RestartButton
+          className={styles.restartButton}
+          onClick={handleRestart}
+          disabled={!isBasketHasApples}
+        />
         <Basket className={styles.basket} />
       </div>
     </div>

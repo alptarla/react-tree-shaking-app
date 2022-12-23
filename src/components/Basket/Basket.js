@@ -5,6 +5,7 @@ import Apple from '../Apple'
 import { useSelector } from 'react-redux'
 import { getRandomInt } from '../../utils'
 import { useMemo } from 'react'
+import PropTypes from 'prop-types'
 
 function getApplePositions(applesCount) {
   return Array.from({ length: applesCount }).map(() => ({
@@ -13,7 +14,7 @@ function getApplePositions(applesCount) {
   }))
 }
 
-export default function Basket({ ...rest }) {
+export default function Basket({ className }) {
   const { isBasketHasApples, applesCount } = useSelector((state) => state.tree)
 
   const applePositions = useMemo(() => {
@@ -21,7 +22,7 @@ export default function Basket({ ...rest }) {
   }, [applesCount])
 
   return (
-    <div className={classNames(styles.basket, rest?.className)}>
+    <div className={classNames(styles.basket, className)}>
       <BasketSVG className={styles.basketSVG} />
 
       {isBasketHasApples
@@ -34,4 +35,8 @@ export default function Basket({ ...rest }) {
         : null}
     </div>
   )
+}
+
+Basket.propTypes = {
+  className: PropTypes.string,
 }

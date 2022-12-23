@@ -18,6 +18,7 @@ export default function Tree({
   onTreeClick,
   isShowApples = true,
   onApplesDropped,
+  className,
 }) {
   const { isTreeShaking, applesCount } = useSelector((state) => state.tree)
 
@@ -26,7 +27,7 @@ export default function Tree({
   }, [applesCount])
 
   return (
-    <div className={styles.treeWrapper}>
+    <div className={classNames(styles.treeWrapper, className)}>
       <TreeSVG
         onClick={onTreeClick}
         className={classNames(styles.treeSvg, {
@@ -51,4 +52,5 @@ Tree.propTypes = {
   onTreeClick: PropTypes.func.isRequired,
   isShowApples: PropTypes.bool,
   onApplesDropped: PropTypes.func,
+  className: PropTypes.string,
 }
