@@ -1,17 +1,16 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Tree from './components/Tree'
-import { getRandomInt } from './utils'
-import { setIsApplesDropping, setIsTreeShaking } from './store/treeSlice'
-import { useEffect, useRef, useState } from 'react'
-
-const APPLE_COUNT = 10
-const APPLE_POSITIONS = Array.from({ length: APPLE_COUNT }).map(() => ({
-  top: `${getRandomInt(5, 13)}rem`,
-  left: `${getRandomInt(8, 25)}rem`,
-}))
+import {
+  setIsApplesDropping,
+  setIsBasketHasApples,
+  setIsTreeShaking,
+} from './store/treeSlice'
+import { useEffect, useRef } from 'react'
+import Basket from './components/Basket/Basket'
+import styles from './styles/App.module.scss'
 
 export default function App() {
-  const [isBasketHasApples, setIsBasketHasApples] = useState(false)
+  const { isBasketHasApples } = useSelector((state) => state.tree)
 
   const dispatch = useDispatch()
 
@@ -32,20 +31,19 @@ export default function App() {
 
   const handleApplesDropped = () => {
     timerRef.current = setTimeout(() => {
-      setIsBasketHasApples(true)
+      dispatch(setIsBasketHasApples(true))
       dispatch(setIsApplesDropping(false))
     }, [1000])
   }
 
   return (
-    <div>
+    <div className={styles.app}>
       <Tree
-        appleCount={APPLE_COUNT}
-        applePositions={APPLE_POSITIONS}
+        isShowApples={!isBasketHasApples}
         onTreeClick={handleTreeClick}
         onApplesDropped={handleApplesDropped}
-        isShowApples={!isBasketHasApples}
       />
+      <Basket className={styles.basket} />
     </div>
   )
 }

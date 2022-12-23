@@ -4,15 +4,26 @@ import styles from './Tree.module.scss'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { useSelector } from 'react-redux'
+import { getRandomInt } from '../../utils'
+import { useMemo } from 'react'
+
+function getApplePositions(applesCount) {
+  return Array.from({ length: applesCount }).map(() => ({
+    top: `${getRandomInt(5, 13)}rem`,
+    left: `${getRandomInt(8, 25)}rem`,
+  }))
+}
 
 export default function Tree({
-  appleCount = 0,
-  applePositions = [],
   onTreeClick,
   isShowApples = true,
   onApplesDropped,
 }) {
-  const { isTreeShaking } = useSelector((state) => state.tree)
+  const { isTreeShaking, applesCount } = useSelector((state) => state.tree)
+
+  const applePositions = useMemo(() => {
+    return getApplePositions(applesCount)
+  }, [applesCount])
 
   return (
     <div className={styles.treeWrapper}>
@@ -26,7 +37,7 @@ export default function Tree({
       />
 
       {isShowApples
-        ? Array.from({ length: appleCount }).map((_, i) => (
+        ? Array.from({ length: applesCount }).map((_, i) => (
             <Apple
               key={i}
               style={{ ...applePositions[i] }}
@@ -39,8 +50,6 @@ export default function Tree({
 }
 
 Tree.propTypes = {
-  appleCount: PropTypes.number,
-  applePositions: PropTypes.array,
   onTreeClick: PropTypes.func.isRequired,
   isShowApples: PropTypes.bool,
   onApplesDropped: PropTypes.func,
