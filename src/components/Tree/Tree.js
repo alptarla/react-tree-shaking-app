@@ -12,7 +12,7 @@ export default function Tree({
   isShowApples = true,
   onApplesDropped,
 }) {
-  const { isTreeShaking, isApplesDropping } = useSelector((state) => state.tree)
+  const { isTreeShaking } = useSelector((state) => state.tree)
 
   return (
     <div className={styles.treeWrapper}>
@@ -29,13 +29,7 @@ export default function Tree({
         ? Array.from({ length: appleCount }).map((_, i) => (
             <Apple
               key={i}
-              className={classNames(styles.appleSvg, {
-                [styles.isShaking]: isTreeShaking,
-                [styles.isDropping]: isApplesDropping,
-              })}
-              style={{
-                ...applePositions[i],
-              }}
+              style={{ ...applePositions[i] }}
               onAnimationEnd={onApplesDropped}
             />
           ))
