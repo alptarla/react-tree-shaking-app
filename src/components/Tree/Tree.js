@@ -1,46 +1,45 @@
 import { ReactComponent as TreeSVG } from '../../assets/cartoon-tree.svg'
 import Apple from '../Apple'
 import styles from './Tree.module.scss'
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import { useSelector } from 'react-redux'
 
-export default function Tree({ appleCount = 0, applePositions = [] }) {
-  const [isShaking, setIShaking] = useState(false)
-  const [isDropping, setIsDropping] = useState(false)
-
-  const handleTreeClick = () => {
-    setIShaking(true)
-
-    setTimeout(() => {
-      setIShaking(false)
-      setIsDropping(true)
-    }, [3000])
-  }
+export default function Tree({
+  appleCount = 0,
+  applePositions = [],
+  onTreeClick,
+  isShowApples = true,
+  onApplesDropped,
+}) {
+  const { isTreeShaking, isApplesDropping } = useSelector((state) => state.tree)
 
   return (
     <div className={styles.treeWrapper}>
       <TreeSVG
-        onClick={handleTreeClick}
+        onClick={onTreeClick}
         width={600}
         height={600}
         className={classNames(styles.treeSvg, {
-          [styles.isShaking]: isShaking,
+          [styles.isShaking]: isTreeShaking,
         })}
       />
 
-      {Array.from({ length: appleCount }).map((_, i) => (
-        <Apple
-          key={i}
-          className={classNames(styles.appleSvg, {
-            [styles.isShaking]: isShaking,
-            [styles.isDropping]: isDropping,
-          })}
-          style={{
-            ...applePositions[i],
-          }}
-        />
-      ))}
+      {isShowApples
+        ? Array.from({ length: appleCount }).map((_, i) => (
+            <Apple
+              key={i}
+              className={classNames(styles.appleSvg, {
+                [styles.isShaking]: isTreeShaking,
+                [styles.isDropping]: isApplesDropping,
+              })}
+              style={{
+                ...applePositions[i],
+              }}
+              onAnimationEnd={onApplesDropped}
+            />
+          ))
+        : null}
     </div>
   )
 }
@@ -48,4 +47,7 @@ export default function Tree({ appleCount = 0, applePositions = [] }) {
 Tree.propTypes = {
   appleCount: PropTypes.number,
   applePositions: PropTypes.array,
+  onTreeClick: PropTypes.func.isRequired,
+  isShowApples: PropTypes.bool,
+  onApplesDropped: PropTypes.func,
 }
