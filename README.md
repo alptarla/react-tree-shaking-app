@@ -1,4 +1,4 @@
-# Protel Code Challenge
+# PROTEIN FRONT-END CASE
 
 ## Overview
 
