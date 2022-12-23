@@ -29,8 +29,6 @@ export default function Tree({
     <div className={styles.treeWrapper}>
       <TreeSVG
         onClick={onTreeClick}
-        width={600}
-        height={600}
         className={classNames(styles.treeSvg, {
           [styles.isShaking]: isTreeShaking,
         })}

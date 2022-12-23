@@ -8,6 +8,7 @@ import {
 import { useEffect, useRef } from 'react'
 import Basket from './components/Basket/Basket'
 import styles from './styles/App.module.scss'
+import RestartButton from './components/RestartButton'
 
 export default function App() {
   const { isBasketHasApples } = useSelector((state) => state.tree)
@@ -43,7 +44,10 @@ export default function App() {
         onTreeClick={handleTreeClick}
         onApplesDropped={handleApplesDropped}
       />
-      <Basket className={styles.basket} />
+      <div className={styles.side}>
+        <div>Restart Button</div>
+        <Basket className={styles.basket} />
+      </div>
     </div>
   )
 }

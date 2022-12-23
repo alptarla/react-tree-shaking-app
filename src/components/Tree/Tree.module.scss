@@ -4,6 +4,9 @@
   cursor: pointer;
 
   .treeSvg {
+    width: 600px;
+    height: 600px;
+
     &.isShaking {
       animation: shakeTree 1s infinite;
     }
