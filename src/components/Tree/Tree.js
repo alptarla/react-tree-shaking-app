@@ -26,9 +26,14 @@ export default function Tree({
     return getApplePositions(applesCount)
   }, [applesCount])
 
+  const handleAppleAnimationEnd = ({ animationName }) => {
+    if (animationName.includes('dropApple')) return onApplesDropped()
+  }
+
   return (
     <div className={classNames(styles.treeWrapper, className)}>
       <TreeSVG
+        data-testid='tree'
         onClick={onTreeClick}
         className={classNames(styles.treeSvg, {
           [styles.isShaking]: isTreeShaking,
@@ -40,7 +45,8 @@ export default function Tree({
             <Apple
               key={i}
               style={{ ...applePositions[i] }}
-              onAnimationEnd={onApplesDropped}
+              onAnimationEnd={handleAppleAnimationEnd}
+              data-testid='apple'
             />
           ))
         : null}

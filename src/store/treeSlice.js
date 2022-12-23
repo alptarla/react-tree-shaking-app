@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+export const treeInitialState = {
+  applesCount: 10,
+  isBasketHasApples: false,
+  isTreeShaking: false,
+  isApplesDropping: false,
+}
+
 export const treeSlice = createSlice({
   name: 'tree',
-  initialState: {
-    applesCount: 10,
-    isBasketHasApples: false,
-    isTreeShaking: false,
-    isApplesDropping: false,
-  },
+  initialState: treeInitialState,
   reducers: {
     setIsTreeShaking: (state, action) => {
       state.isTreeShaking = action.payload
