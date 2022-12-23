@@ -46,7 +46,6 @@ export default function Tree({
               key={i}
               style={{ ...applePositions[i] }}
               onAnimationEnd={handleAppleAnimationEnd}
-              data-testid='apple'
             />
           ))
         : null}

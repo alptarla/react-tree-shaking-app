@@ -8,6 +8,7 @@ export default function Apple({ ...rest }) {
 
   return (
     <AppleSVG
+      data-testid='apple'
       className={classNames(styles.apple, {
         [styles.isShaking]: isTreeShaking,
         [styles.isDropping]: isApplesDropping,
